@@ -63,13 +63,23 @@ class App extends Component {
   }
 
   searchHandler(text) {
-    axios
-      .get(`${this.state.baseUrl}/posts/filter`, { text })
-      .then(response => {
-        console.log(response);
-        this.setState({ posts: response.data });
-      })
-      .catch(error => console.error(error));
+    if (text.length >= 1) {
+      axios
+        .get(`${this.state.baseUrl}/posts/filter?text=${text}`)
+        .then(response => {
+          console.log(response);
+          this.setState({ posts: response.data });
+        })
+        .catch(error => console.error(error));
+    } else {
+      axios
+        .get(`${this.state.baseUrl}/posts`)
+        .then(response => {
+          console.log(response);
+          this.setState({ posts: response.data });
+        })
+        .catch(error => console.error(error));
+    }
   }
 
   render() {
