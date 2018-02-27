@@ -20,9 +20,10 @@ class App extends Component {
     this.deletePost = this.deletePost.bind(this);
     this.createPost = this.createPost.bind(this);
     this.searchHandler = this.searchHandler.bind(this);
+    this.getAll = this.getAll.bind(this);
   }
 
-  componentDidMount() {
+  getAll() {
     axios
       .get(`${this.state.baseUrl}/posts`)
       .then(response => {
@@ -30,6 +31,10 @@ class App extends Component {
         this.setState({ posts: response.data });
       })
       .catch(error => console.error(error));
+  }
+
+  componentDidMount() {
+    this.getAll();
   }
 
   updatePost(id, text) {
@@ -72,13 +77,7 @@ class App extends Component {
         })
         .catch(error => console.error(error));
     } else {
-      axios
-        .get(`${this.state.baseUrl}/posts`)
-        .then(response => {
-          console.log(response);
-          this.setState({ posts: response.data });
-        })
-        .catch(error => console.error(error));
+      this.getAll();
     }
   }
 
