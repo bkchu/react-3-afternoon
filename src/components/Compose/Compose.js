@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
-import ProfileIcon from 'react-icons/lib/md/person-outline';
+import React, { Component } from "react";
+import ProfileIcon from "react-icons/lib/md/person-outline";
 
-import './Compose.css';
+import "./Compose.css";
 
 export default class Compose extends Component {
   constructor() {
     super();
-    
+
     this.state = {
-      text: ''
+      text: ""
     };
 
-    this.createPost = this.createPost.bind( this );
+    this.createPost = this.createPost.bind(this);
   }
 
-  updateText( text ) {
+  updateText(text) {
     this.setState({ text });
   }
 
   createPost() {
-
+    this.props.createPostFn(this.state.text);
+    this.setState({ text: "" });
   }
 
   render() {
@@ -28,22 +29,22 @@ export default class Compose extends Component {
     return (
       <section className="Compose__parent">
         <div className="Compose__top">
-
           <div className="Compose__profile-picture">
             <ProfileIcon />
           </div>
 
-          <input className="Compose__input"
-                 placeholder="What's on your mind?"
-                 value={ text }
-                 onChange={ ( e ) => this.updateText( e.target.value ) } />
-
+          <input
+            className="Compose__input"
+            placeholder="What's on your mind?"
+            value={text}
+            onChange={e => this.updateText(e.target.value)}
+          />
         </div>
 
         <div className="Compose__bottom">
-          <button onClick={ this.createPost }>Compose</button>
+          <button onClick={this.createPost}>Compose</button>
         </div>
       </section>
-    )
+    );
   }
 }

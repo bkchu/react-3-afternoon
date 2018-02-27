@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import ProfileIcon from 'react-icons/lib/md/person-outline';
-import ReplyIcon from 'react-icons/lib/md/chat-bubble-outline';
-import FavoriteIcon from 'react-icons/lib/md/favorite-outline';
-import MessageIcon from 'react-icons/lib/md/mail-outline';
-import MasterControlIcon from 'react-icons/lib/md/more-vert';
+import React, { Component } from "react";
+import ProfileIcon from "react-icons/lib/md/person-outline";
+import ReplyIcon from "react-icons/lib/md/chat-bubble-outline";
+import FavoriteIcon from "react-icons/lib/md/favorite-outline";
+import MessageIcon from "react-icons/lib/md/mail-outline";
+import MasterControlIcon from "react-icons/lib/md/more-vert";
 
-import './Post.css';
+import "./Post.css";
 
-import Edit from './Edit/Edit';
+import Edit from "./Edit/Edit";
 
 export default class Post extends Component {
   constructor() {
@@ -18,10 +18,10 @@ export default class Post extends Component {
       showMasterMenu: false
     };
 
-    this.hideEdit = this.hideEdit.bind( this );
-    this.showEdit = this.showEdit.bind( this );
-    this.toggleMasterMenu = this.toggleMasterMenu.bind( this );
-    this.hideMasterMenu = this.hideMasterMenu.bind( this );
+    this.hideEdit = this.hideEdit.bind(this);
+    this.showEdit = this.showEdit.bind(this);
+    this.toggleMasterMenu = this.toggleMasterMenu.bind(this);
+    this.hideMasterMenu = this.hideMasterMenu.bind(this);
   }
 
   showEdit() {
@@ -37,23 +37,26 @@ export default class Post extends Component {
   }
 
   hideMasterMenu() {
-    if ( this.state.showMasterMenu === true ) {
+    if (this.state.showMasterMenu === true) {
       this.setState({ showMasterMenu: false });
     }
   }
 
   render() {
     const { editing, showMasterMenu } = this.state;
+    const { date, text, updatePostFn, id, deletePostFn } = this.props;
 
     return (
-      <section className="Post__parent" onClick={ this.hideMasterMenu }>
-
+      <section className="Post__parent" onClick={this.hideMasterMenu}>
         <div className="Post__master-controls">
-          <MasterControlIcon onClick={ this.toggleMasterMenu } />
+          <MasterControlIcon onClick={this.toggleMasterMenu} />
 
-          <div className="Post__master-menu" style={ { display: showMasterMenu ? 'flex' : 'none' } }>
-            <span onClick={ this.showEdit }>Edit</span>
-            <span>Delete</span>
+          <div
+            className="Post__master-menu"
+            style={{ display: showMasterMenu ? "flex" : "none" }}
+          >
+            <span onClick={this.showEdit}>Edit</span>
+            <span onClick={() => deletePostFn(id)}>Delete</span>
           </div>
         </div>
 
@@ -65,18 +68,20 @@ export default class Post extends Component {
           <span className="Post__name">DevMountain</span>
           <span className="Post__handle">@DevMountain</span>
 
-          <span className="Post__date">- POST DATE GOES HERE</span>
+          <span className="Post__date">- {date}</span>
         </div>
 
         <div className="Post__content">
-          {
-            editing
-            ?
-              <Edit text=""
-                    hideEdit={ this.hideEdit } />
-            :
-              <span className="Post__text">POST TEXT GOES HERE</span>
-          }
+          {editing ? (
+            <Edit
+              text={text}
+              hideEdit={this.hideEdit}
+              updatePostFn={updatePostFn}
+              id={id}
+            />
+          ) : (
+            <span className="Post__text">{text}</span>
+          )}
         </div>
 
         <div className="Post__user-controls">
@@ -84,8 +89,7 @@ export default class Post extends Component {
           <FavoriteIcon className="Post__control-icon" />
           <MessageIcon className="Post__control-icon" />
         </div>
-
       </section>
-    )
+    );
   }
 }
